@@ -1,0 +1,12 @@
+module.exports = {
+  SMART_CONTRACT: {
+    HASH: '0x10cbB0F4B3348df82ed6AAeC9C17E8045222fA62',
+    PATH: '/work/projetos/blockchain/build/contracts/Chat.json',
+    CALLER: '0x36F981982B180B5DB4Da3277904dAe8c945C6a33',
+    GAS_LIMIT: 6721975
+  },
+  WEB3: {
+    PROVIDER: 'https://ropsten.infura.io/v3/58b2f21033f74dfe927667d314d98f87',
+    PRIVATE_KEY: '874BCD9BF4A12D0EDA95AE9F4C89D9E7808D2940FFB8F742A0371B086F6B97D5'
+  }
+}

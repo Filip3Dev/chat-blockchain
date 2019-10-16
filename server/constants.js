@@ -1,7 +1,7 @@
 module.exports = {
   SMART_CONTRACT: {
     HASH: '0x10cbB0F4B3348df82ed6AAeC9C17E8045222fA62',
-    PATH: '/work/projetos/blockchain/build/contracts/Chat.json',
+    PATH: '/home/filipe/work/chat-blockchain/build/contracts/Chat.json',
     CALLER: '0x36F981982B180B5DB4Da3277904dAe8c945C6a33',
     GAS_LIMIT: 6721975
   },

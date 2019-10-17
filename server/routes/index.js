@@ -14,5 +14,7 @@ router.get('/', async (req, res, next) => {
 router.get('/salas', controller.list);
 router.get('/sala/:roomId/entrar/:userId', controller.enterRoom);
 router.get('/sala/usuario/:userId', controller.getUserRooms);
+router.get('/sala/:roomId', controller.getRoomMessages);
+router.post('/message', controller.createMessage);
 
 module.exports = router;

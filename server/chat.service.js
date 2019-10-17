@@ -49,6 +49,7 @@ class ChatService {
     return messages.map(parseMessage);
   }
 
+  // OK
   async getRoomMessages(roomId) {
     const messageIds = await smartContract.contract.methods.getRoomMessages(roomId).call({ from: smartContract.caller });
     const promises = [];
@@ -59,6 +60,7 @@ class ChatService {
     return messages.map(parseMessage);
   }
 
+  // OK
   async getRooms() {
     const roomIds = await smartContract.contract.methods.getRooms().call({ from: smartContract.caller });
     const promises = [];
@@ -69,6 +71,7 @@ class ChatService {
     return rooms.map(parseRoom);
   }
 
+  // OK
   async getUserRooms(userId) {
     const roomIds = await smartContract.contract.methods.getUserRooms(userId).call({ from: smartContract.caller });
     const promises = [];
@@ -79,6 +82,7 @@ class ChatService {
     return rooms;
   }
 
+  // OK
   async joinRoom(userId, roomId) {
     const transactionData = smartContract.contract.methods.joinRoom(userId, roomId).encodeABI();
 

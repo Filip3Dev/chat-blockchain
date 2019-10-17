@@ -18,9 +18,6 @@ exports.enterRoom = async (req, res, next) => {
   try {
     let sala = req.params.roomId;
     let user = req.params.userId;
-    console.log("Sala: ", sala)
-    console.log("User: ", user)
-
     const salas = await chatService.joinRoom(user, sala);
     res.status(200).send(salas);
   } catch (e) {
@@ -38,6 +35,31 @@ exports.getUserRooms = async (req, res, next) => {
     res.status(200).send(salas);
   } catch (e) {
     console.log(e)
+    res.status(500).send({
+      message: 'Falha ao processar sua requisição'
+    });
+  }
+};
+
+exports.getRoomMessages = async (req, res, next) => {
+  try {
+    let room = req.params.roomId;
+    const salas = await chatService.getRoomMessages(room);
+    res.status(200).send(salas);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({
+      message: 'Falha ao processar sua requisição'
+    });
+  }
+};
+
+exports.createMessage = async (req, res, next) => {
+  try {
+    const salas = await chatService.createMessage(req.body);
+    res.status(200).send(salas);
+  } catch (e) {
+    console.log(e);
     res.status(500).send({
       message: 'Falha ao processar sua requisição'
     });

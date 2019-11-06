@@ -22,6 +22,7 @@ const parseRoom = (room) => {
 };
 
 class ChatService {
+  // OK
   async createMessage(message) {
     const transactionData = smartContract.contract.methods.createMessage(
       message.content,

@@ -77,43 +77,6 @@ class SmartContract {
 
   }
 
-  // sendSignedTransaction(transactionData) {
-  //   return new Promise((resolve, reject) => {
-  //     this.getCurrentGasPrices().then((gasPrices) => {
-  //       const gasPrice = gasPrices.medium.toString();
-  //       // With every new transaction you send using a specific wallet address,
-  //       // you need to increase a nonce which is tied to the sender wallet.
-  //       this._web3.eth.getTransactionCount(this._web3.eth.defaultAccount).then((nonce) => {
-  //         // Generate the transaction
-  //         // IMPORTANT: Gas Limit and Price _MUST_ be numbers or they cause errors
-  //         const txParams = {
-  //           data: transactionData,
-  //           gasLimit: this._web3.utils.toHex(2100000),
-  //           gasPrice: this._web3.utils.toHex(this._web3.utils.toWei('6', 'gwei')),
-  //           nonce: this._web3.utils.toHex(nonce),
-  //           to: CONSTANTS.SMART_CONTRACT.HASH,
-  //           value: this._web3.utils.toHex(this._web3.utils.toWei('0', 'ether'))
-  //         };
-  //         console.log("OB: ", txParams)
-  //
-  //         const transaction = new Tx(txParams, { chain: 'ropsten' });
-  //         transaction.sign(CONSTANTS.WEB3.PRIVATE_KEY);
-  //         const serializedTransaction = transaction.serialize();
-  //
-  //         const initialTime = Date.now();
-  //         this._web3.eth.sendSignedTransaction(`0x${serializedTransaction.toString('hex')}`)
-  //           .on('receipt', (receipt) => {
-  //             const endTime = Date.now();
-  //             const elapsedTime = (endTime - initialTime) / 1000;
-  //             console.log(`Transaction #${nonce} using gas price of ${gasPrice} gwei took ${elapsedTime} seconds`);
-  //             resolve(receipt);
-  //           })
-  //           .on('error', reject);
-  //       }).catch(reject);
-  //     });
-  //   });
-  // }
-
   get caller() {
     return this._caller;
   }

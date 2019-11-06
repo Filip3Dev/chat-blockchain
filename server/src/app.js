@@ -17,7 +17,6 @@ var corsOptions = {
 const index = require('../routes/index');
 
 app.use(cors(corsOptions))
-// app.use(helmet());
 
 app.use(bodyParser.json({
   limit: '50mb', extended: true

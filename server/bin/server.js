@@ -1,7 +1,7 @@
 'use strict'
 
 const app = require('../src/app');
-const debug = require('debug')('balta:server');
+const debug = require('debug')('filipe:server');
 const http = require('http');
 
 const port = normalizePort(process.env.PORT || '9000');

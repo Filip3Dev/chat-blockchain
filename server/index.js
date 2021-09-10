@@ -4,28 +4,27 @@ const axios = require('axios');
 const Tx = require('ethereumjs-tx').Transaction;
 const fs = require('fs');
 const Web3 = require('web3');
-
-const CONSTANTS = require('./constants');
+require('dotenv').config();
 
 class SmartContract {
   constructor() {
-    const contractHash = CONSTANTS.SMART_CONTRACT.HASH;
-    const contractPath = CONSTANTS.SMART_CONTRACT.PATH;
+    const contractHash = process.env.SMART_CONTRACT_ADDR;
+    const contractPath = process.env.SMART_CONTRACT_PATH;
     const contractInterface = fs.readFileSync(contractPath, 'utf-8');
 
-    const web3Provider = CONSTANTS.WEB3.PROVIDER;
-
+    
+    const web3Provider = process.env.WEB3_PROVIDER;
+    
     this._interface = JSON.parse(contractInterface).abi;
-
+    
     this._web3 = new Web3();
     this._web3.setProvider(new this._web3.providers.HttpProvider(web3Provider));
-    this._web3.eth.defaultAccount = CONSTANTS.SMART_CONTRACT.CALLER;
-    // this._web3.setProvider(new this._web3.providers.WebsocketProvider(web3Provider));
+    this._web3.eth.defaultAccount = process.env.SMART_CONTRACT_MANAGE;
     this._contract = new this._web3.eth.Contract(this._interface, contractHash);
 
-    this._caller = CONSTANTS.SMART_CONTRACT.CALLER;
+    this._caller = process.env.SMART_CONTRACT_MANAGE;
 
-    this._gasLimit = CONSTANTS.SMART_CONTRACT.GAS_LIMIT;
+    this._gasLimit = process.env.GAS_LIMIT;
   }
 
   async getCurrentGasPrices() {
@@ -46,15 +45,15 @@ class SmartContract {
 
     const txObject = {
       nonce: this._web3.utils.toHex(txCount),
-      to: CONSTANTS.SMART_CONTRACT.HASH,
+      to: process.env.SMART_CONTRACT_ADDR,
       value: this._web3.utils.toHex(this._web3.utils.toWei('0', 'ether')),
       gasLimit: this._web3.utils.toHex(2100000),
       gasPrice: this._web3.utils.toHex(this._web3.utils.toWei('6', 'gwei')),
       data: transactionData
     };
 
-    const tx = new Tx(txObject, { chain: 'ropsten' });
-    tx.sign(Buffer.from(CONSTANTS.WEB3.PRIVATE_KEY, 'hex'));
+    const tx = new Tx(txObject, { chain: 'kovan' });
+    tx.sign(Buffer.from(process.env.PRIVATE_KEY, 'hex'));
 
     const serializedTx = tx.serialize();
     const raw = '0x' + serializedTx.toString('hex');

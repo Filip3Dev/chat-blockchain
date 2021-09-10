@@ -8,6 +8,7 @@ exports.list = async (req, res, next) => {
     const salas = await chatService.getRooms()
     res.status(200).send(salas);
   } catch (e) {
+    console.log(e);
     res.status(500).send({
       message: 'Falha ao processar sua requisição'
     });
@@ -56,8 +57,20 @@ exports.getRoomMessages = async (req, res, next) => {
 
 exports.createMessage = async (req, res, next) => {
   try {
-    const salas = await chatService.createMessage(req.body);
-    res.status(200).send(salas);
+    const menssagem = await chatService.createMessage(req.body);
+    res.status(200).send(menssagem);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({
+      message: 'Falha ao processar sua requisição'
+    });
+  }
+};
+
+exports.createRoom = async (req, res, next) => {
+  try {
+    const sala = await chatService.createRoom(req.body);
+    res.status(200).send(sala);
   } catch (e) {
     console.log(e);
     res.status(500).send({

@@ -1,4 +1,5 @@
-pragma solidity ^0.4.24;
+//SPDX-License-Identifier: GPL-3.0
+pragma solidity 0.8.4;
 
 contract Chat {
     struct Message {
@@ -17,10 +18,6 @@ contract Chat {
 
     mapping(uint => uint) private messagesInRoom;
     mapping(uint => uint) private messageToRoom;
-    // NOTE: This mapping has to be private because accessors for mapping
-    // with dynamically-sized keys not yet implemented.
-    // Also, string[] cannot be returned on getter functions, so these maps
-    // are for internal usage only
     mapping(uint => string[]) private roomToUsers;
     mapping(string => uint[]) private userToRooms;
 
@@ -34,7 +31,7 @@ contract Chat {
         _;
     }
 
-    modifier userNotInRoom(uint roomCode, string userCode) {
+    modifier userNotInRoom(uint roomCode, string memory userCode) {
         bool notInRoom = true;
         uint pointer = 0;
         string[] memory roomUsers = roomToUsers[roomCode];
@@ -52,7 +49,7 @@ contract Chat {
         _;
     }
 
-    function createMessage(string messageStr, string username, string language, uint256 date, uint roomId) external returns (uint) {
+    function createMessage(string memory messageStr, string memory username, string memory language, uint256 date, uint roomId) external returns (uint) {
         Message memory message = Message(messageStr, username, language, date);
         messages.push(message);
 
@@ -65,7 +62,7 @@ contract Chat {
         return messageId;
     }
 
-    function createRoom(string name) external returns (uint) {
+    function createRoom(string memory name) external returns (uint) {
         Room memory room = Room(name);
         rooms.push(room);
 
@@ -77,20 +74,12 @@ contract Chat {
         return roomId;
     }
 
-    function getMessage(uint messageCode) external view returns (uint code, string message, string username, string language, uint256 date, uint roomId) {
+    function getMessage(uint messageCode) external view returns (uint code, string memory message, string memory username, string memory language, uint256 date, uint roomId) {
         Message memory innerMsg = messages[messageCode];
         return (messageCode, innerMsg.message, innerMsg.username, innerMsg.language, innerMsg.date, messageToRoom[messageCode]);
     }
 
-    function getMessages() external view returns (uint[]) {
-        uint[] memory result = new uint[](messages.length);
-        for (uint index = 0; index < messages.length; index++) {
-            result[index] = index;
-        }
-        return result;
-    }
-
-    function getRoomMessages(uint roomId) external view returns (uint[]) {
+    function getRoomMessages(uint roomId) external view returns (uint[] memory) {
         uint[] memory result = new uint[](messagesInRoom[roomId]);
         uint amount = 0;
         for (uint index = 0; index < messages.length; index++) {
@@ -102,12 +91,12 @@ contract Chat {
         return result;
     }
 
-    function getRoom(uint roomCode) external view returns (uint code, string name) {
+    function getRoom(uint roomCode) external view returns (uint code, string memory name) {
         Room memory room = rooms[roomCode];
         return (roomCode, room.name);
     }
 
-    function getRooms() external view returns (uint[]) {
+    function getRooms() external view returns (uint[] memory) {
         uint[] memory result = new uint[](rooms.length);
         for (uint index = 0; index < rooms.length; index++) {
             result[index] = index;
@@ -115,11 +104,11 @@ contract Chat {
         return result;
     }
 
-    function getUserRooms(string userCode) external view returns (uint[]) {
+    function getUserRooms(string memory userCode) external view returns (uint[] memory) {
         return userToRooms[userCode];
     }
 
-    function joinRoom(string userCode, uint roomCode) external validRoomId(roomCode) userNotInRoom(roomCode, userCode) returns (uint[]) {
+    function joinRoom(string memory userCode, uint roomCode) external validRoomId(roomCode) userNotInRoom(roomCode, userCode) returns (uint[] memory) {
         userToRooms[userCode].push(roomCode);
         roomToUsers[roomCode].push(userCode);
 
@@ -128,7 +117,7 @@ contract Chat {
         return userToRooms[userCode];
     }
 
-    function leaveRoom(string userCode, uint roomCode) external validRoomId(roomCode) returns (bool) {
+    function leaveRoom(string memory userCode, uint roomCode) external validRoomId(roomCode) returns (bool) {
         bool result = _clearUserRooms(userCode, roomCode) && _clearRoomUsers(roomCode, userCode);
         if (result) {
             emit UserLeftRoom(userCode, roomCode);
@@ -137,7 +126,7 @@ contract Chat {
         return result;
     }
 
-    function _clearUserRooms(string userCode, uint roomCode) internal returns (bool) {
+    function _clearUserRooms(string memory userCode, uint roomCode) internal returns (bool) {
         bool found = false;
         uint pointer = 0;
         uint roomsLength = userToRooms[userCode].length;
@@ -150,7 +139,6 @@ contract Chat {
                 // much worse if order mattered.
                 // delete userToRooms[userCode][pointer];
                 userToRooms[userCode][pointer] = userToRooms[userCode][roomsLength - 1];
-                userToRooms[userCode].length--;
 
                 emit UserLeftRoom(userCode, roomCode);
 
@@ -163,7 +151,7 @@ contract Chat {
         return found;
     }
 
-    function _clearRoomUsers(uint roomCode, string userCode) internal returns (bool) {
+    function _clearRoomUsers(uint roomCode, string memory userCode) internal returns (bool) {
         bool found = false;
         uint pointer = 0;
         uint usersLength = roomToUsers[roomCode].length;
@@ -178,7 +166,6 @@ contract Chat {
                 // much worse if order mattered.
                 // delete roomToUsers[roomCode][pointer];
                 roomToUsers[roomCode][pointer] = roomToUsers[roomCode][usersLength - 1];
-                roomToUsers[roomCode].length--;
 
                 found = true;
             } else {
